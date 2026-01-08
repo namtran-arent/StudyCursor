@@ -29,8 +29,18 @@ export async function GET() {
       .order('created_at', { ascending: false });
 
     if (error) {
+      console.error('Supabase error:', {
+        message: error.message,
+        code: error.code,
+        details: error.details,
+        hint: error.hint,
+      });
       return NextResponse.json(
-        { error: error.message },
+        { 
+          error: error.message,
+          code: error.code,
+          details: error.details,
+        },
         { status: 500 }
       );
     }
