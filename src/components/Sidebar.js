@@ -17,7 +17,7 @@ export default function Sidebar({ isOpen }) {
               <div className="absolute top-1 left-1 right-1 h-0.5 bg-yellow-400"></div>
             </div>
           </div>
-          <span className="text-xl font-semibold text-black dark:text-zinc-50">Ko0ls</span>
+          <span className="text-xl font-semibold text-black dark:text-zinc-50">Ko0ls AI</span>
         </div>
       </div>
 

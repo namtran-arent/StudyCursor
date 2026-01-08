@@ -1,9 +1,13 @@
 import { NextResponse } from 'next/server';
 
 export function middleware(request) {
+  const { pathname } = request.nextUrl;
+  
   // Redirect root path to dashboards
-  if (request.nextUrl.pathname === '/') {
-    return NextResponse.redirect(new URL('/dashboards', request.url));
+  if (pathname === '/') {
+    const url = request.nextUrl.clone();
+    url.pathname = '/dashboards';
+    return NextResponse.redirect(url);
   }
   
   return NextResponse.next();
@@ -12,12 +16,8 @@ export function middleware(request) {
 export const config = {
   matcher: [
     /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
+     * Match only the root path
      */
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+    '/',
   ],
 };
