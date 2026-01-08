@@ -35,11 +35,28 @@ export default function ProtectedPage() {
           body: JSON.stringify({ key: apiKey }),
         });
 
+        // Check if response has content and is JSON
+        const contentType = response.headers.get('content-type');
+        let data = null;
+        
+        if (contentType && contentType.includes('application/json')) {
+          const text = await response.text();
+          if (text) {
+            try {
+              data = JSON.parse(text);
+            } catch (parseError) {
+              console.error('Failed to parse JSON:', parseError);
+              showNotification('Invalid response from server', 'error');
+              sessionStorage.removeItem('apiKeyToValidate');
+              return;
+            }
+          }
+        }
+
         // Check response status
         if (response.status === 200) {
           // Valid API key (200 OK)
-          const data = await response.json();
-          if (data.valid) {
+          if (data && data.valid) {
             showNotification('Valid API key, /protected can be accessed', 'success');
             // Clear the API key from sessionStorage after validation
             sessionStorage.removeItem('apiKeyToValidate');
@@ -50,13 +67,14 @@ export default function ProtectedPage() {
           }
         } else if (response.status === 401) {
           // Invalid API key (401 Unauthorized)
-          showNotification('Invalid API key', 'error');
+          const errorMessage = data?.error || 'Invalid API key';
+          showNotification(errorMessage, 'error');
           // Clear the API key from sessionStorage
           sessionStorage.removeItem('apiKeyToValidate');
         } else {
           // Other errors (500, etc.)
-          const data = await response.json();
-          showNotification(data.error || 'Failed to validate API key', 'error');
+          const errorMessage = data?.error || 'Failed to validate API key';
+          showNotification(errorMessage, 'error');
           sessionStorage.removeItem('apiKeyToValidate');
         }
       } catch (error) {

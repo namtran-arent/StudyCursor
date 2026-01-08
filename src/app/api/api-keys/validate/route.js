@@ -33,25 +33,29 @@ export async function POST(request) {
       );
     }
 
+    // Trim the key to remove any whitespace
+    const trimmedKey = key.trim();
+
     // Check if API key exists in database
+    // Use maybeSingle() instead of single() to avoid throwing error when not found
     const { data, error } = await supabase
       .from('api_keys')
       .select('id, name, key, type')
-      .eq('key', key)
-      .single();
+      .eq('key', trimmedKey)
+      .maybeSingle();
 
-    // If error or no data found, return 401 Unauthorized
-    if (error || !data) {
-      // Check if it's a "not found" error (PGRST116) or any other error
-      if (error?.code === 'PGRST116' || !data) {
-        return NextResponse.json(
-          { error: 'Invalid API key' },
-          { status: 401 }
-        );
-      }
-      // Other database errors
+    // If error occurred, return 401 Unauthorized
+    if (error) {
       return NextResponse.json(
-        { error: error?.message || 'Failed to validate API key' },
+        { error: error.message || 'Failed to validate API key' },
+        { status: 401 }
+      );
+    }
+
+    // If no data found, return 401 Unauthorized
+    if (!data) {
+      return NextResponse.json(
+        { error: 'Invalid API key' },
         { status: 401 }
       );
     }
@@ -62,8 +66,9 @@ export async function POST(request) {
       { status: 200 }
     );
   } catch (error) {
+    console.error('Exception in validate API:', error);
     return NextResponse.json(
-      { error: 'Failed to validate API key' },
+      { error: `Failed to validate API key: ${error.message}` },
       { status: 500 }
     );
   }
