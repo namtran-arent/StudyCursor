@@ -9,13 +9,18 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "@langchain/core": "^1.1.12",
+    "@langchain/google-genai": "^2.1.7",
+    "@langchain/openai": "^1.2.1",
     "@supabase/supabase-js": "^2.90.0",
     "langchain": "^1.2.7",
     "next": "16.1.1",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "zod": "^4.3.5",
+    "zod-to-json-schema": "^3.25.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
