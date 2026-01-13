@@ -1,5 +1,7 @@
 'use client';
 
+import LoginButton from '@/components/LoginButton';
+
 export default function Header({ sidebarOpen, setSidebarOpen, darkMode, setDarkMode }) {
   return (
     <header className="h-14 border-b border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 flex items-center justify-between px-6">
@@ -48,6 +50,7 @@ export default function Header({ sidebarOpen, setSidebarOpen, darkMode, setDarkM
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
           </svg>
         </button>
+        <LoginButton />
       </div>
     </header>
   );

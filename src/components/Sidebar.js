@@ -1,8 +1,28 @@
 'use client';
 
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
+import { useState } from 'react';
 
 export default function Sidebar({ isOpen }) {
+  const { data: session } = useSession();
+  const [imageError, setImageError] = useState(false);
+
+  // Get user's first name initial for avatar
+  const getAvatarInitial = () => {
+    if (session?.user?.name) {
+      return session.user.name.charAt(0).toUpperCase();
+    }
+    if (session?.user?.email) {
+      return session.user.email.charAt(0).toUpperCase();
+    }
+    return 'P'; // Default fallback
+  };
+
+  const getUserName = () => {
+    return session?.user?.name || 'Phuong Nam Tran';
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -96,11 +116,24 @@ export default function Sidebar({ isOpen }) {
       {/* User Profile */}
       <div className="p-4 border-t border-zinc-200 dark:border-zinc-800">
         <div className="flex items-center gap-3 cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800 rounded-lg p-2">
-          <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-medium">
-            P
-          </div>
+          {/* Profile Picture with Fallback */}
+          {session?.user?.image && !imageError ? (
+            <img
+              src={session.user.image}
+              alt={getUserName()}
+              className="w-8 h-8 rounded-full object-cover border-2 border-zinc-200 dark:border-zinc-700"
+              onError={() => setImageError(true)}
+              onLoad={() => setImageError(false)}
+            />
+          ) : (
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-sm font-semibold border-2 border-zinc-200 dark:border-zinc-700">
+              {getAvatarInitial()}
+            </div>
+          )}
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100 truncate">Phuong Nam Tran</p>
+            <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100 truncate">
+              {getUserName()}
+            </p>
           </div>
           <svg className="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

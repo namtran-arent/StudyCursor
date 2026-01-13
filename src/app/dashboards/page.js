@@ -1,6 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import Notification from '@/components/Notification';
 import Sidebar from '@/components/Sidebar';
 import Header from '@/components/dashboards/Header';
@@ -12,6 +14,8 @@ import { useApiKeys } from '@/hooks/useApiKeys';
 import { generateApiKey } from '@/utils/apiKeyUtils';
 
 export default function DashboardsPage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const { apiKeys, loading, error, fetchApiKeys, createApiKey, updateApiKey, deleteApiKey } = useApiKeys();
   
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,6 +37,30 @@ export default function DashboardsPage() {
   const [deleteKeyId, setDeleteKeyId] = useState(null);
   const [deleteKeyName, setDeleteKeyName] = useState('');
   const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/login?callbackUrl=/dashboards');
+    }
+  }, [status, router]);
+
+  // Show loading state while checking session
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-zinc-50 dark:bg-black">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-zinc-600 dark:text-zinc-400">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Don't render if not authenticated (will redirect)
+  if (status === 'unauthenticated' || !session) {
+    return null;
+  }
 
   const handleOpenModal = (key = null) => {
     if (key) {
