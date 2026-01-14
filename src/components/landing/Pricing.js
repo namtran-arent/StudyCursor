@@ -18,6 +18,7 @@ const plans = [
     ],
     cta: 'Get Started',
     popular: false,
+    comingSoon: false,
   },
   {
     name: 'Pro',
@@ -34,6 +35,7 @@ const plans = [
     ],
     cta: 'Upgrade to Pro',
     popular: true,
+    comingSoon: true,
   },
   {
     name: 'Enterprise',
@@ -49,6 +51,7 @@ const plans = [
     ],
     cta: 'Contact Sales',
     popular: false,
+    comingSoon: true,
   },
 ];
 
@@ -65,16 +68,23 @@ export default function Pricing() {
           </p>
         </div>
         
-        <div className="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
+        <div className="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto items-stretch">
           {plans.map((plan) => (
-            <Card
-              key={plan.name}
-              className={`relative ${plan.popular ? 'border-primary border-2 sm:scale-105' : ''}`}
-            >
+            <div key={plan.name} className="flex flex-col h-full">
+              <Card
+                className={`relative flex flex-col h-full ${plan.popular ? 'border-primary border-2 sm:scale-105' : ''}`}
+              >
               {plan.popular && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10">
                   <span className="rounded-full bg-primary px-4 py-1 text-xs font-semibold text-primary-foreground">
                     Most Popular
+                  </span>
+                </div>
+              )}
+              {plan.comingSoon && (
+                <div className="absolute top-4 right-4 z-10">
+                  <span className="rounded-full bg-amber-500 text-white px-3 py-1 text-xs font-semibold shadow-md">
+                    Coming Soon
                   </span>
                 </div>
               )}
@@ -86,7 +96,7 @@ export default function Pricing() {
                 </div>
                 <CardDescription className="mt-2">{plan.description}</CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex-1">
                 <ul className="space-y-3">
                   {plan.features.map((feature) => (
                     <li key={feature} className="flex items-start gap-2">
@@ -96,19 +106,31 @@ export default function Pricing() {
                   ))}
                 </ul>
               </CardContent>
-              <CardFooter>
-                <Button
-                  asChild
-                  variant={plan.popular ? 'default' : 'outline'}
-                  className="w-full"
-                  size="lg"
-                >
-                  <Link href={plan.name === 'Enterprise' ? '/contact' : '/login'}>
-                    {plan.cta}
-                  </Link>
-                </Button>
+              <CardFooter className="mt-auto">
+                {plan.comingSoon ? (
+                  <Button
+                    disabled
+                    variant="outline"
+                    className="w-full cursor-not-allowed opacity-60"
+                    size="lg"
+                  >
+                    Coming Soon
+                  </Button>
+                ) : (
+                  <Button
+                    asChild
+                    variant={plan.popular ? 'default' : 'outline'}
+                    className="w-full"
+                    size="lg"
+                  >
+                    <Link href={plan.name === 'Enterprise' ? '/contact' : '/login'}>
+                      {plan.cta}
+                    </Link>
+                  </Button>
+                )}
               </CardFooter>
             </Card>
+            </div>
           ))}
         </div>
       </div>
