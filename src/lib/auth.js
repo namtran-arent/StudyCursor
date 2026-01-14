@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
+import { createOrUpdateUser } from './userService';
 
 // Validate required environment variables
 if (!process.env.GOOGLE_CLIENT_ID) {
@@ -54,13 +55,34 @@ export const authOptions = {
       return session;
     },
     async jwt({ token, user, account, profile }) {
-      // Initial sign in - save user data to token
+      // Initial sign in - save user data to token and create/update user in database
       if (account && user) {
         token.accessToken = account.access_token;
         token.id = user.id;
         token.name = user.name;
         token.email = user.email;
         token.picture = user.image || profile?.picture || profile?.image;
+
+        // Save user to Supabase database on first login
+        // This only runs on the initial sign-in, not on token refresh
+        if (account.provider === 'google') {
+          try {
+            const savedUser = await createOrUpdateUser({
+              id: user.id,
+              email: user.email,
+              name: user.name,
+              image: token.picture,
+            });
+            
+            if (savedUser) {
+              // Store database user ID in token for future reference
+              token.dbUserId = savedUser.id;
+            }
+          } catch (error) {
+            console.error('Error saving user to database:', error);
+            // Don't block authentication if database save fails
+          }
+        }
       }
       return token;
     },
