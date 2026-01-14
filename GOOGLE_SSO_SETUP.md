@@ -126,12 +126,17 @@ yarn dev
 
 ## Troubleshooting
 
-### Issue: "redirect_uri_mismatch" Error
+### Issue: "redirect_uri_mismatch" Error (Error 400)
 
 **Solution**: 
-- Make sure the redirect URI in Google Cloud Console exactly matches: `http://localhost:3000/api/auth/callback/google`
-- Check for trailing slashes or typos
-- Wait a few minutes after updating - Google caches these settings
+- Make sure the redirect URI in Google Cloud Console exactly matches: `{NEXTAUTH_URL}/api/auth/callback/google`
+- For local: `http://localhost:3000/api/auth/callback/google`
+- For production: `https://your-app.vercel.app/api/auth/callback/google`
+- Check for trailing slashes or typos (no trailing `/`)
+- Check protocol (http vs https) matches
+- Check domain matches exactly
+- Wait 2-5 minutes after updating - Google caches these settings
+- **See detailed guide:** `FIX_REDIRECT_URI_MISMATCH.md`
 
 ### Issue: "Invalid Client" Error
 
