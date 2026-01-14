@@ -39,8 +39,8 @@ function LoginContent() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-zinc-50 dark:bg-black px-4">
-      <div className="max-w-md w-full bg-white dark:bg-zinc-900 rounded-lg shadow-lg p-8 border border-zinc-200 dark:border-zinc-800">
+    <div className="min-h-screen flex items-center justify-center bg-zinc-50 dark:bg-black px-4 py-8">
+      <div className="max-w-md w-full bg-white dark:bg-zinc-900 rounded-lg shadow-lg p-6 sm:p-8 border border-zinc-200 dark:border-zinc-800">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-black dark:text-zinc-50 mb-2">
             Welcome Back

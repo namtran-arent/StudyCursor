@@ -36,7 +36,27 @@ export default function DashboardsPage() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteKeyId, setDeleteKeyId] = useState(null);
   const [deleteKeyName, setDeleteKeyName] = useState('');
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false); // Start closed on mobile
+
+  // Handle sidebar state based on screen size
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        // Desktop: open sidebar by default
+        setSidebarOpen(true);
+      } else {
+        // Mobile: close sidebar
+        setSidebarOpen(false);
+      }
+    };
+
+    // Set initial state
+    handleResize();
+
+    // Listen for resize events
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Redirect to login if not authenticated
   useEffect(() => {
@@ -217,10 +237,17 @@ export default function DashboardsPage() {
   return (
     <div className={`min-h-screen ${darkMode ? 'dark' : ''} bg-white dark:bg-black`}>
       <div className="flex h-screen overflow-hidden">
-        {/* Left Sidebar */}
+        {/* Left Sidebar - Mobile overlay, Desktop sidebar */}
         <aside className={`${
           sidebarOpen ? 'w-64' : 'w-0'
-        } bg-white dark:bg-zinc-900 ${sidebarOpen ? 'border-r border-zinc-200 dark:border-zinc-800' : ''} flex flex-col transition-all duration-300 ease-in-out overflow-hidden`}>
+        } bg-white dark:bg-zinc-900 ${sidebarOpen ? 'border-r border-zinc-200 dark:border-zinc-800' : ''} flex flex-col transition-all duration-300 ease-in-out overflow-hidden fixed md:relative inset-y-0 left-0 z-40 md:z-auto`}>
+          {/* Mobile overlay backdrop */}
+          {sidebarOpen && (
+            <div 
+              className="fixed inset-0 bg-black/50 z-30 md:hidden"
+              onClick={() => setSidebarOpen(false)}
+            />
+          )}
           <Sidebar isOpen={sidebarOpen} />
         </aside>
 
@@ -235,14 +262,14 @@ export default function DashboardsPage() {
           />
 
           {/* Main Content Area */}
-          <main className="flex-1 overflow-y-auto bg-zinc-50 dark:bg-black p-8">
+          <main className="flex-1 overflow-y-auto bg-zinc-50 dark:bg-black p-4 sm:p-6 md:p-8">
             {/* Breadcrumb */}
-            <div className="mb-4">
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">Pages / Overview</p>
+            <div className="mb-2 sm:mb-4">
+              <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">Pages / Overview</p>
             </div>
 
             {/* Page Title */}
-            <h1 className="text-4xl font-bold text-black dark:text-zinc-50 mb-6">Overview</h1>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-black dark:text-zinc-50 mb-4 sm:mb-6">Overview</h1>
 
             {/* Notifications */}
             <Notification
@@ -269,12 +296,12 @@ export default function DashboardsPage() {
             <PlanCard />
 
             {/* API Keys Section */}
-            <div className="bg-white dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800">
-              <div className="p-6 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center">
-                <h2 className="text-xl font-semibold text-black dark:text-zinc-50">API Keys</h2>
+            <div className="bg-white dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800 overflow-hidden">
+              <div className="p-4 sm:p-6 border-b border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0">
+                <h2 className="text-lg sm:text-xl font-semibold text-black dark:text-zinc-50">API Keys</h2>
                 <button
                   onClick={() => handleOpenModal()}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors text-sm font-medium flex items-center gap-2"
+                  className="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors text-sm font-medium flex items-center justify-center gap-2"
                   disabled={loading}
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

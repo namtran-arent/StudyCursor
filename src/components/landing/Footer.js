@@ -5,9 +5,9 @@ import { Github } from 'lucide-react';
 
 export default function LandingFooter() {
   return (
-    <footer className="border-t border-zinc-200/50 dark:border-zinc-800/50 bg-gradient-to-b from-zinc-50/50 to-white dark:from-zinc-900/50 dark:to-zinc-950 py-12">
-      <div className="container mx-auto px-4">
-        <div className="grid gap-8 md:grid-cols-4">
+    <footer className="border-t border-zinc-200/50 dark:border-zinc-800/50 bg-gradient-to-b from-zinc-50/50 to-white dark:from-zinc-900/50 dark:to-zinc-950 py-8 sm:py-12">
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="grid gap-6 sm:gap-8 grid-cols-2 sm:grid-cols-2 md:grid-cols-4">
           <div className="space-y-4">
             <Link href="/" className="flex items-center gap-2 font-bold">
               <Github className="h-5 w-5" />

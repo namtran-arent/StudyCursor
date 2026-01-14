@@ -20,14 +20,14 @@ export default function Hero() {
             <span className="text-zinc-700 dark:text-zinc-300">AI-Powered GitHub Repository Insights</span>
           </div>
           
-          <h1 className="mb-6 text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl text-zinc-900 dark:text-zinc-50">
+          <h1 className="mb-4 sm:mb-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 px-2 sm:px-0">
             Analyze Any GitHub Repository
-            <span className="block bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 bg-clip-text text-transparent underline decoration-amber-400/50 decoration-2 underline-offset-4">
+            <span className="block bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 bg-clip-text text-transparent underline decoration-amber-400/50 decoration-2 underline-offset-2 sm:underline-offset-4 mt-1 sm:mt-2">
               in Seconds
             </span>
           </h1>
           
-          <p className="mb-8 text-lg text-zinc-600 dark:text-zinc-400 sm:text-xl md:text-2xl">
+          <p className="mb-6 sm:mb-8 text-base sm:text-lg md:text-xl lg:text-2xl text-zinc-600 dark:text-zinc-400 px-4 sm:px-0 max-w-3xl mx-auto">
             Get instant insights: summaries, stars, cool facts, latest PRs, and version updates
             for any open source GitHub repository.
           </p>
@@ -60,34 +60,34 @@ export default function Hero() {
             </Button>
           </div>
           
-          <div className="mt-12 grid grid-cols-2 gap-8 sm:grid-cols-4">
+          <div className="mt-8 sm:mt-12 grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 md:gap-8 px-2 sm:px-0">
             <div className="flex flex-col items-center">
-              <div className="mb-2 rounded-lg bg-gradient-to-br from-amber-100 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30 p-3">
-                <Github className="h-8 w-8 text-amber-600 dark:text-amber-400" />
+              <div className="mb-2 rounded-lg bg-gradient-to-br from-amber-100 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30 p-2 sm:p-3">
+                <Github className="h-6 w-6 sm:h-8 sm:w-8 text-amber-600 dark:text-amber-400" />
               </div>
-              <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">10K+</div>
-              <div className="text-sm text-zinc-600 dark:text-zinc-400">Repos Analyzed</div>
+              <div className="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-50">10K+</div>
+              <div className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 text-center">Repos Analyzed</div>
             </div>
             <div className="flex flex-col items-center">
-              <div className="mb-2 rounded-lg bg-gradient-to-br from-amber-100 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30 p-3">
-                <Zap className="h-8 w-8 text-amber-600 dark:text-amber-400" />
+              <div className="mb-2 rounded-lg bg-gradient-to-br from-amber-100 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30 p-2 sm:p-3">
+                <Zap className="h-6 w-6 sm:h-8 sm:w-8 text-amber-600 dark:text-amber-400" />
               </div>
-              <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">&lt;5s</div>
-              <div className="text-sm text-zinc-600 dark:text-zinc-400">Analysis Time</div>
+              <div className="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-50">&lt;5s</div>
+              <div className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 text-center">Analysis Time</div>
             </div>
             <div className="flex flex-col items-center">
-              <div className="mb-2 rounded-lg bg-gradient-to-br from-amber-100 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30 p-3">
-                <TrendingUp className="h-8 w-8 text-amber-600 dark:text-amber-400" />
+              <div className="mb-2 rounded-lg bg-gradient-to-br from-amber-100 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30 p-2 sm:p-3">
+                <TrendingUp className="h-6 w-6 sm:h-8 sm:w-8 text-amber-600 dark:text-amber-400" />
               </div>
-              <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">99.9%</div>
-              <div className="text-sm text-zinc-600 dark:text-zinc-400">Uptime</div>
+              <div className="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-50">99.9%</div>
+              <div className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 text-center">Uptime</div>
             </div>
             <div className="flex flex-col items-center">
-              <div className="mb-2 rounded-lg bg-gradient-to-br from-amber-100 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30 p-3">
-                <Sparkles className="h-8 w-8 text-amber-600 dark:text-amber-400" />
+              <div className="mb-2 rounded-lg bg-gradient-to-br from-amber-100 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30 p-2 sm:p-3">
+                <Sparkles className="h-6 w-6 sm:h-8 sm:w-8 text-amber-600 dark:text-amber-400" />
               </div>
-              <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">AI</div>
-              <div className="text-sm text-zinc-600 dark:text-zinc-400">Powered</div>
+              <div className="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-50">AI</div>
+              <div className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 text-center">Powered</div>
             </div>
           </div>
         </div>

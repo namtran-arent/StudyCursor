@@ -65,11 +65,11 @@ export default function Pricing() {
           </p>
         </div>
         
-        <div className="grid gap-8 md:grid-cols-3">
+        <div className="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
           {plans.map((plan) => (
             <Card
               key={plan.name}
-              className={`relative ${plan.popular ? 'border-primary border-2 scale-105' : ''}`}
+              className={`relative ${plan.popular ? 'border-primary border-2 sm:scale-105' : ''}`}
             >
               {plan.popular && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2">
