@@ -9,17 +9,37 @@
 
 ### Bước 2: Thêm các biến môi trường
 
-Thêm 2 biến sau:
+Thêm các biến sau (chọn tất cả 3 environments: Production, Preview, Development):
 
+#### Supabase Variables:
 | Name | Value | Environment |
 |------|-------|-------------|
 | `NEXT_PUBLIC_SUPABASE_URL` | `https://your-project.supabase.co` | Production, Preview, Development |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...` | Production, Preview, Development |
 
-**Lưu ý:**
-- Chọn tất cả 3 environments (Production, Preview, Development)
-- Copy chính xác URL và Key từ Supabase Dashboard
-- Sau khi thêm, cần **Redeploy** project để áp dụng
+#### Google OAuth Variables:
+| Name | Value | Environment |
+|------|-------|-------------|
+| `GOOGLE_CLIENT_ID` | `your-client-id.apps.googleusercontent.com` | Production, Preview, Development |
+| `GOOGLE_CLIENT_SECRET` | `GOCSPX-...` | Production, Preview, Development |
+
+#### NextAuth Variables:
+| Name | Value | Environment |
+|------|-------|-------------|
+| `NEXTAUTH_SECRET` | `your-generated-secret` (generate với `openssl rand -base64 32`) | Production, Preview, Development |
+| `NEXTAUTH_URL` | `https://your-app.vercel.app` | Production, Preview, Development |
+
+#### OpenAI Variable (nếu dùng GitHub Summarizer):
+| Name | Value | Environment |
+|------|-------|-------------|
+| `OPENAI_API_KEY` | `sk-...` | Production, Preview, Development |
+
+**Lưu ý quan trọng:**
+- ✅ Chọn tất cả 3 environments (Production, Preview, Development) cho mỗi biến
+- ✅ `NEXTAUTH_URL` phải là URL production của bạn (ví dụ: `https://your-app.vercel.app`)
+- ✅ Cập nhật **Authorized redirect URIs** trong Google Cloud Console:
+  - Thêm: `https://your-app.vercel.app/api/auth/callback/google`
+- ✅ Sau khi thêm tất cả biến, cần **Redeploy** project để áp dụng
 
 ## 2. Kiểm tra Supabase RLS Policies
 
@@ -80,6 +100,10 @@ curl https://your-app.vercel.app/api/api-keys
 
 ## 5. Troubleshooting
 
+### Lỗi Build: "useSearchParams() should be wrapped in a suspense boundary"
+- ✅ Đã được sửa trong code - đảm bảo đã pull code mới nhất
+- ✅ Nếu vẫn lỗi, kiểm tra file `src/app/auth/error/page.js` và `src/app/login/page.js` có Suspense wrapper
+
 ### Lỗi: "Supabase is not configured"
 - ✅ Kiểm tra environment variables đã được thêm chưa
 - ✅ Kiểm tra tên biến có đúng: `NEXT_PUBLIC_SUPABASE_URL` và `NEXT_PUBLIC_SUPABASE_ANON_KEY`
@@ -90,9 +114,22 @@ curl https://your-app.vercel.app/api/api-keys
 - ✅ Kiểm tra Supabase URL và Key có đúng không
 - ✅ Xem Function Logs trên Vercel để biết lỗi chi tiết
 
+### Lỗi: Google OAuth không hoạt động
+- ✅ Kiểm tra `GOOGLE_CLIENT_ID` và `GOOGLE_CLIENT_SECRET` đã được thêm chưa
+- ✅ Kiểm tra `NEXTAUTH_SECRET` đã được tạo và thêm chưa
+- ✅ Kiểm tra `NEXTAUTH_URL` đúng với domain Vercel của bạn
+- ✅ Cập nhật **Authorized redirect URIs** trong Google Cloud Console:
+  - Thêm: `https://your-app.vercel.app/api/auth/callback/google`
+- ✅ Đợi vài phút sau khi cập nhật Google Cloud Console (Google cache settings)
+
 ### Lỗi: CORS hoặc Network errors
 - ✅ Kiểm tra Supabase project có đang active không
 - ✅ Kiểm tra network restrictions trên Supabase
+
+### Lỗi: Build failed với environment variables warnings
+- ✅ Các warnings về missing env vars là bình thường trong build process
+- ✅ Quan trọng là đảm bảo tất cả env vars đã được set trên Vercel Dashboard
+- ✅ Redeploy sau khi thêm env vars
 
 ## 6. Kiểm tra nhanh
 
