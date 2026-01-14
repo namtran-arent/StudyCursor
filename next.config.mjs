@@ -2,15 +2,6 @@
 const nextConfig = {
   /* config options here */
   reactCompiler: true,
-  async redirects() {
-    return [
-      {
-        source: '/',
-        destination: '/dashboards',
-        permanent: false,
-      },
-    ];
-  },
 };
 
 export default nextConfig;

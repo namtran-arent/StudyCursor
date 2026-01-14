@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Ko0ls AI",
-  description: "AI-powered dashboard and API management",
+  title: "Dandi GitHub Analyzer - Insights for Open Source Repositories",
+  description: "Get summaries, stars, cool facts, latest PRs, and version updates on any open source GitHub repository.",
 };
 
 export default function RootLayout({ children }) {

@@ -4,11 +4,12 @@ import { getToken } from 'next-auth/jwt';
 export async function middleware(request) {
   const { pathname } = request.nextUrl;
   
-  // Skip middleware for API routes, auth routes, and static files
+  // Skip middleware for API routes, auth routes, static files, and root path (landing page)
   if (
     pathname.startsWith('/api/') ||
     pathname.startsWith('/auth/') ||
-    pathname.startsWith('/_next/')
+    pathname.startsWith('/_next/') ||
+    pathname === '/'
   ) {
     return NextResponse.next();
   }
@@ -27,13 +28,6 @@ export async function middleware(request) {
       console.warn('⚠️  NEXTAUTH_SECRET is not set - authentication may not work properly');
     }
   }
-  
-  // Redirect root path to dashboards
-  if (pathname === '/') {
-    const url = request.nextUrl.clone();
-    url.pathname = '/dashboards';
-    return NextResponse.redirect(url);
-  }
 
   // Protect dashboard routes - require authentication
   const protectedPaths = ['/dashboards', '/protected'];
@@ -46,10 +40,10 @@ export async function middleware(request) {
     return NextResponse.redirect(url);
   }
 
-  // Redirect authenticated users away from login page
+  // Redirect authenticated users away from login page to landing page
   if (pathname === '/login' && token) {
     const url = request.nextUrl.clone();
-    url.pathname = '/dashboards';
+    url.pathname = '/';
     return NextResponse.redirect(url);
   }
   
