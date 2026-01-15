@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { summarizeReadme } from '@/lib/chain';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -45,7 +44,7 @@ export async function POST(request) {
     // Use maybeSingle() instead of single() to avoid throwing error when not found
     const { data, error } = await supabase
       .from('api_keys')
-      .select('id, name, key, type')
+      .select('id, name, key, type, usage, monthly_limit, limit_enabled')
       .eq('key', trimmedKey)
       .maybeSingle();
 
@@ -63,6 +62,24 @@ export async function POST(request) {
         { error: 'Invalid API key' },
         { status: 401 }
       );
+    }
+
+    // Rate limiting check
+    // If limit is enabled, check if usage has reached the limit
+    if (data.limit_enabled && data.monthly_limit !== null) {
+      const currentUsage = data.usage || 0;
+      const limit = data.monthly_limit;
+      
+      if (currentUsage >= limit) {
+        return NextResponse.json(
+          { 
+            error: 'Rate limit exceeded. You have reached your monthly API usage limit.',
+            usage: currentUsage,
+            limit: limit
+          },
+          { status: 429 }
+        );
+      }
     }
 
     // Check if githubUrl is provided
@@ -87,43 +104,32 @@ export async function POST(request) {
       );
     }
 
-    // Generate summary using LangChain
+    // Increment API key usage after successful README fetch
     try {
-      const summaryResult = await summarizeReadme(readmeContent);
-      console.log('Summary Result:', summaryResult);
+      const { error: updateError } = await supabase
+        .from('api_keys')
+        .update({ usage: (data.usage || 0) + 1 })
+        .eq('id', data.id);
 
-      // Return summary result
-      return NextResponse.json(
-        {
-          summary: summaryResult.summary,
-          cool_facts: summaryResult.cool_facts
-        },
-        { status: 200 }
-      );
-    } catch (summaryError) {
-      console.error('Error generating summary:', summaryError);
-      
-      // Handle specific OpenAI API errors
-      const errorMessage = summaryError.message || '';
-      let statusCode = 500;
-      let userMessage = `Failed to generate summary: ${errorMessage}`;
-      
-      // Check for quota/rate limit errors (429)
-      if (errorMessage.includes('429') || errorMessage.includes('quota') || errorMessage.includes('rate limit')) {
-        statusCode = 429;
-        userMessage = 'OpenAI API quota exceeded or rate limit reached. Please check your OpenAI account billing and usage limits at https://platform.openai.com/account/billing. You may need to upgrade your plan or wait before making more requests.';
+      if (updateError) {
+        // Log error but don't fail the request
+        console.error('Failed to increment API key usage:', updateError);
+      } else {
+        console.log(`API key usage incremented for key ID: ${data.id}`);
       }
-      // Check for authentication errors (401)
-      else if (errorMessage.includes('401') || errorMessage.includes('Incorrect API key') || errorMessage.includes('OPENAI_API_KEY')) {
-        statusCode = 401;
-        userMessage = 'Invalid OpenAI API key. Please check your OPENAI_API_KEY in .env.local file. Get your API key at https://platform.openai.com/account/api-keys';
-      }
-      
-      return NextResponse.json(
-        { error: userMessage },
-        { status: statusCode }
-      );
+    } catch (incrementError) {
+      // Log error but don't fail the request
+      console.error('Exception while incrementing API key usage:', incrementError);
     }
+
+    // Return README content
+    return NextResponse.json(
+      {
+        readme: readmeContent,
+        githubUrl: githubUrl
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error('Exception in github-summarizer API:', error);
     return NextResponse.json(
