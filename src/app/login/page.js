@@ -8,7 +8,8 @@ function LoginContent() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get('callbackUrl') || '/';
+  // Always redirect to landing page after login
+  const callbackUrl = '/';
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -64,7 +65,7 @@ function LoginContent() {
         <button
           onClick={() => {
             setError(null);
-            signIn('google', { callbackUrl });
+            signIn('google', { callbackUrl: '/' }); // Always redirect to landing page
           }}
           className="w-full px-4 py-3 bg-white dark:bg-zinc-800 border-2 border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors text-sm font-medium flex items-center justify-center gap-3 shadow-sm"
         >

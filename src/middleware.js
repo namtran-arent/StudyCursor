@@ -36,7 +36,7 @@ export async function middleware(request) {
   if (isProtectedPath && !token) {
     const url = request.nextUrl.clone();
     url.pathname = '/login';
-    url.searchParams.set('callbackUrl', pathname);
+    url.searchParams.set('callbackUrl', '/'); // Always redirect to landing page
     return NextResponse.redirect(url);
   }
 

@@ -61,7 +61,7 @@ export default function DashboardsPage() {
   // Redirect to login if not authenticated
   useEffect(() => {
     if (status === 'unauthenticated') {
-      router.push('/login?callbackUrl=/dashboards');
+      router.push('/login?callbackUrl=/'); // Always redirect to landing page after login
     }
   }, [status, router]);
 
