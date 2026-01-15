@@ -26,8 +26,11 @@ if (!nextAuthUrl) {
 }
 
 export const authOptions = {
-  // Explicitly set the base URL to ensure it uses NEXTAUTH_URL
-  ...(nextAuthUrl && { basePath: undefined }), // Let NextAuth use NEXTAUTH_URL
+  // Force NextAuth to use NEXTAUTH_URL from environment variable
+  ...(nextAuthUrl && { 
+    url: nextAuthUrl,
+    basePath: '/api/auth',
+  }),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || '',
