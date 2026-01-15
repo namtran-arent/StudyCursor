@@ -46,6 +46,23 @@ export const authOptions = {
     }),
   ],
   callbacks: {
+    // Override redirect callback to force use NEXTAUTH_URL
+    async redirect({ url, baseUrl }) {
+      // Force use NEXTAUTH_URL if set
+      const base = nextAuthUrl || baseUrl;
+      console.log('🔍 Redirect callback - baseUrl:', baseUrl, 'NEXTAUTH_URL:', nextAuthUrl, 'Using:', base);
+      
+      // If url is relative, make it absolute using NEXTAUTH_URL
+      if (url.startsWith('/')) {
+        return `${base}${url}`;
+      }
+      // If url is on same origin, use it
+      if (new URL(url).origin === new URL(base).origin) {
+        return url;
+      }
+      // Otherwise, return base URL
+      return base;
+    },
     async session({ session, token, user }) {
       // Add user ID to session
       if (session.user) {
