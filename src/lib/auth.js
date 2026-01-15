@@ -30,6 +30,7 @@ export const authOptions = {
   ...(nextAuthUrl && { 
     url: nextAuthUrl,
     basePath: '/api/auth',
+    trustHost: true, // Trust the host from NEXTAUTH_URL
   }),
   providers: [
     GoogleProvider({
