@@ -41,11 +41,11 @@ export default function Features() {
     <section id="features" className="py-20 md:py-32 bg-gradient-to-b from-white via-zinc-50/30 to-white dark:from-zinc-950 dark:via-zinc-900/30 dark:to-zinc-950">
       <div className="container mx-auto px-4">
         <div className="mx-auto max-w-2xl text-center mb-16">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl mb-4">
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl mb-4 text-zinc-900 dark:text-zinc-50">
             Everything You Need to Understand
-            <span className="block text-primary">Any GitHub Repository</span>
+            <span className="block text-amber-600 dark:text-amber-400">Any GitHub Repository</span>
           </h2>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-lg text-zinc-600 dark:text-zinc-400">
             Powerful features to help you analyze and understand open source projects
           </p>
         </div>

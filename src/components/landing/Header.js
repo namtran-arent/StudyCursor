@@ -27,8 +27,8 @@ export default function LandingHeader() {
     <header className="sticky top-0 z-50 w-full border-b border-zinc-200/50 dark:border-zinc-800/50 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-zinc-950/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6">
         <div className="flex items-center gap-2 sm:gap-4">
-          <Link href="/" className="flex items-center gap-1.5 sm:gap-2 font-bold text-lg sm:text-xl">
-            <Github className="h-5 w-5 sm:h-6 sm:w-6" />
+          <Link href="/" className="flex items-center gap-1.5 sm:gap-2 font-bold text-lg sm:text-xl text-zinc-900 dark:text-zinc-50">
+            <Github className="h-5 w-5 sm:h-6 sm:w-6 text-zinc-900 dark:text-zinc-50" />
             <span className="hidden xs:inline sm:inline">Ko0ls GitHub Analyzer</span>
             <span className="xs:hidden">Ko0ls</span>
           </Link>
@@ -46,10 +46,10 @@ export default function LandingHeader() {
         
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6">
-          <Link href="#features" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+          <Link href="#features" className="text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">
             Features
           </Link>
-          <Link href="#pricing" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+          <Link href="#pricing" className="text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">
             Pricing
           </Link>
         </nav>
@@ -60,11 +60,11 @@ export default function LandingHeader() {
             <div className="flex items-center gap-3">
               {/* User Info */}
               <div className="flex flex-col items-end">
-                <span className="text-sm font-medium">
+                <span className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
                   {session.user?.name || session.user?.email || 'User'}
                 </span>
                 {session.user?.email && session.user?.name && (
-                  <span className="text-xs text-muted-foreground">
+                  <span className="text-xs text-zinc-600 dark:text-zinc-400">
                     {session.user.email}
                   </span>
                 )}
@@ -98,7 +98,11 @@ export default function LandingHeader() {
             </div>
           ) : (
             <>
-              <Button asChild variant="ghost" size="sm">
+              <Button 
+                asChild 
+                size="sm"
+                className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white border-0 shadow-md shadow-blue-500/20 hover:shadow-blue-500/30 transition-all"
+              >
                 <Link href="/login">Log In</Link>
               </Button>
               <Button 
@@ -113,17 +117,17 @@ export default function LandingHeader() {
         </div>
 
         {/* Mobile Menu Button */}
-        <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-          aria-label="Toggle menu"
-        >
-          {mobileMenuOpen ? (
-            <X className="h-6 w-6" />
-          ) : (
-            <Menu className="h-6 w-6" />
-          )}
-        </button>
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? (
+              <X className="h-6 w-6 text-zinc-900 dark:text-zinc-50" />
+            ) : (
+              <Menu className="h-6 w-6 text-zinc-900 dark:text-zinc-50" />
+            )}
+          </button>
       </div>
 
       {/* Mobile Menu */}
@@ -132,14 +136,14 @@ export default function LandingHeader() {
           <nav className="container mx-auto px-4 py-4 space-y-3">
             <Link 
               href="#features" 
-              className="block text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
+              className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors py-2"
               onClick={() => setMobileMenuOpen(false)}
             >
               Features
             </Link>
             <Link 
               href="#pricing" 
-              className="block text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
+              className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors py-2"
               onClick={() => setMobileMenuOpen(false)}
             >
               Pricing
@@ -147,7 +151,7 @@ export default function LandingHeader() {
             {isAuthenticated && (
               <Link 
                 href="/dashboards" 
-                className="block text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
+                className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors py-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Dashboard
@@ -171,11 +175,11 @@ export default function LandingHeader() {
                       </div>
                     )}
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium truncate">
+                      <p className="text-sm font-medium text-zinc-900 dark:text-zinc-50 truncate">
                         {session.user?.name || session.user?.email || 'User'}
                       </p>
                       {session.user?.email && session.user?.name && (
-                        <p className="text-xs text-muted-foreground truncate">
+                        <p className="text-xs text-zinc-600 dark:text-zinc-400 truncate">
                           {session.user.email}
                         </p>
                       )}
@@ -195,7 +199,11 @@ export default function LandingHeader() {
                 </>
               ) : (
                 <>
-                  <Button asChild variant="ghost" className="w-full" size="sm">
+                  <Button 
+                    asChild 
+                    className="w-full bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white border-0 shadow-md shadow-blue-500/20 hover:shadow-blue-500/30 transition-all" 
+                    size="sm"
+                  >
                     <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
                       Log In
                     </Link>

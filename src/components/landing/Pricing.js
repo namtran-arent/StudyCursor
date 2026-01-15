@@ -60,10 +60,10 @@ export default function Pricing() {
     <section id="pricing" className="py-20 md:py-32 bg-gradient-to-b from-white to-zinc-50/50 dark:from-zinc-950 dark:to-zinc-900/50">
       <div className="container mx-auto px-4">
         <div className="mx-auto max-w-2xl text-center mb-16">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl mb-4">
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl mb-4 text-zinc-900 dark:text-zinc-50">
             Simple, Transparent Pricing
           </h2>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-lg text-zinc-600 dark:text-zinc-400">
             Choose the plan that works best for you. Start free, upgrade anytime.
           </p>
         </div>

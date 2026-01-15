@@ -90,8 +90,37 @@ export async function POST(request) {
       );
     }
 
-    console.log('Fetching README for:', githubUrl);
+    console.log('Fetching repository info for:', githubUrl);
     
+    // Parse GitHub URL
+    const urlParts = githubUrl.split('/');
+    const owner = urlParts[3];
+    const repo = urlParts[4];
+    
+    // Fetch repository information (stars, license, etc.)
+    let repoInfo = null;
+    try {
+      const repoResponse = await fetch(`https://api.github.com/repos/${owner}/${repo}`, {
+        headers: {
+          'Accept': 'application/vnd.github.v3+json',
+        },
+      });
+      
+      if (repoResponse.ok) {
+        repoInfo = await repoResponse.json();
+        console.log('Repository info fetched:', {
+          stars: repoInfo.stargazers_count,
+          license: repoInfo.license?.name || 'No license',
+        });
+      } else {
+        console.warn('Failed to fetch repository info:', repoResponse.statusText);
+      }
+    } catch (repoInfoError) {
+      console.warn('Error fetching repository info:', repoInfoError);
+      // Continue even if repo info fails
+    }
+    
+    // Fetch README content
     let readmeContent;
     try {
       readmeContent = await getReadmeContent(githubUrl);
@@ -122,11 +151,17 @@ export async function POST(request) {
       console.error('Exception while incrementing API key usage:', incrementError);
     }
 
-    // Return README content
+    // Return README content with repository info
     return NextResponse.json(
       {
         readme: readmeContent,
-        githubUrl: githubUrl
+        githubUrl: githubUrl,
+        stars: repoInfo?.stargazers_count || 0,
+        license: repoInfo?.license?.name || null,
+        description: repoInfo?.description || null,
+        language: repoInfo?.language || null,
+        forks: repoInfo?.forks_count || 0,
+        watchers: repoInfo?.watchers_count || 0,
       },
       { status: 200 }
     );

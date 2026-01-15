@@ -26,12 +26,8 @@ if (!nextAuthUrl) {
 }
 
 export const authOptions = {
-  // Force NextAuth to use NEXTAUTH_URL from environment variable
-  ...(nextAuthUrl && { 
-    url: nextAuthUrl,
-    basePath: '/api/auth',
-    trustHost: true, // Trust the host from NEXTAUTH_URL
-  }),
+  // Trust the host header (required for Vercel and production)
+  trustHost: true,
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || '',
@@ -49,12 +45,16 @@ export const authOptions = {
   callbacks: {
     // Override redirect callback to always redirect to landing page
     async redirect({ url, baseUrl }) {
-      // Force use NEXTAUTH_URL if set
-      const base = nextAuthUrl || baseUrl;
-      console.log('🔍 Redirect callback - baseUrl:', baseUrl, 'NEXTAUTH_URL:', nextAuthUrl, 'Using:', base);
-      
-      // Always redirect to landing page
-      return `${base}/`;
+      // If url is a relative path, resolve it against baseUrl
+      if (url.startsWith('/')) {
+        return `${baseUrl}${url}`;
+      }
+      // If url is on the same origin, allow it
+      if (new URL(url).origin === baseUrl) {
+        return url;
+      }
+      // Always redirect to landing page by default
+      return `${baseUrl}/`;
     },
     async session({ session, token, user }) {
       // Add user ID to session
