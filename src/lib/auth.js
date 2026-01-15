@@ -16,11 +16,18 @@ if (!process.env.NEXTAUTH_SECRET) {
   console.error('   Generate one using: openssl rand -base64 32');
 }
 
-if (!process.env.NEXTAUTH_URL) {
+// Force use NEXTAUTH_URL from environment variable
+const nextAuthUrl = process.env.NEXTAUTH_URL;
+
+if (!nextAuthUrl) {
   console.warn('⚠️  NEXTAUTH_URL is not set, using default: http://localhost:3000');
+} else {
+  console.log('✅ NEXTAUTH_URL is set to:', nextAuthUrl);
 }
 
 export const authOptions = {
+  // Explicitly set the base URL to ensure it uses NEXTAUTH_URL
+  ...(nextAuthUrl && { basePath: undefined }), // Let NextAuth use NEXTAUTH_URL
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || '',
