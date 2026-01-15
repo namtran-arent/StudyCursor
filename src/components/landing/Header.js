@@ -29,8 +29,8 @@ export default function LandingHeader() {
         <div className="flex items-center gap-2 sm:gap-4">
           <Link href="/" className="flex items-center gap-1.5 sm:gap-2 font-bold text-lg sm:text-xl">
             <Github className="h-5 w-5 sm:h-6 sm:w-6" />
-            <span className="hidden xs:inline sm:inline">Dandi GitHub Analyzer</span>
-            <span className="xs:hidden">Dandi</span>
+            <span className="hidden xs:inline sm:inline">Ko0ls GitHub Analyzer</span>
+            <span className="xs:hidden">Ko0ls</span>
           </Link>
           
           {/* Dashboard Button - Only show when logged in, hidden on mobile */}
